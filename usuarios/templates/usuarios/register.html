@@ -9,50 +9,56 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <style>
       body {
-        background: linear-gradient(135deg, #2c3e50, #3498db);
-        color: #ecf0f1;
+        background: linear-gradient(135deg, #6c5ce7, #a367dc);
+        color: #fff;
         min-height: 100vh;
         padding: 40px 0;
       }
       .register-card {
-        background: rgba(44, 62, 80, 0.9);
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
       .form-control {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
         color: #fff;
-        padding: 10px 15px;
-        margin-bottom: 15px;
+        padding: 12px 20px;
+        transition: all 0.3s;
       }
       .form-control:focus {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        border-color: #3498db;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
       }
       .btn-primary {
-        background: #e74c3c;
+        background: #a367dc;
         border: none;
-        border-radius: 10px;
-        padding: 12px;
-        font-weight: bold;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+      }
+      .btn-primary:hover {
+        background: #8854d0;
+        transform: translateY(-2px);
       }
       .card-header {
-        background: none;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       }
       label {
-        color: #bdc3c7;
-        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        margin-bottom: 8px;
       }
       .text-danger {
-        background: rgba(231, 76, 60, 0.2);
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.8rem;
+        background: rgba(255, 107, 129, 0.2);
+        padding: 8px 15px;
+        border-radius: 8px;
       }
     </style>
   </head>

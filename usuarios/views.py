@@ -91,3 +91,15 @@ def editar_usuario(request, id):
         'form': form,
         'usuario': usuario
     })
+
+@login_required
+def remover_usuario(request, id):
+    if request.method == 'POST':
+        usuario = get_object_or_404(UserBlog, id=id)
+        try:
+            usuario.delete()
+            messages.success(request, 'Usuário removido com sucesso!')
+        except Exception as e:
+            messages.error(request, 'Erro ao remover usuário.')
+        
+    return redirect('usuarios:lista_usuarios')
