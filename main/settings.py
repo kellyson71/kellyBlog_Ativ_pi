@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'curso',
     'gerencia',
     'usuarios',
+    'bootstrap4'
 ]
 
 MIDDLEWARE = [
