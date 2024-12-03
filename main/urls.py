@@ -19,7 +19,7 @@ from django.urls import path, include
 from curso import views
 from django.conf import settings
 from django.conf.urls.static import static
-from gerencia.views import index
+from gerencia.views import index, editar_categoria, excluir
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',index,name='index' ), # index
@@ -28,6 +28,9 @@ urlpatterns = [
     path('curso/<int:curso_id>',views.detalhe_curso,name='detalhe_curso'),
     path('sobre/',views.pagina_sobre,name='pagina_sobre'),
     path('teste/',views.pagina_teste,name='pagina_teste'),
+    path('categoria/editar/<int:id>', editar_categoria, name='editar_categoria'),
+    path('categoria/editar/excluir/<int:id>', excluir, name='excluir'),
+    
 ]
 
 if settings.DEBUG:

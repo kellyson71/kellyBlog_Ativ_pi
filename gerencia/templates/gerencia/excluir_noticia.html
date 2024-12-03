@@ -1,0 +1,17 @@
+{% extends 'base_gerencia.html' %} {% block main %}
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Confirmar Exclusão</h6>
+  </div>
+  <div class="card-body">
+    <p>Tem certeza que deseja excluir a notícia "{{ noticia.titulo }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+      <a href="{% url 'gerencia:listagem_noticia' %}" class="btn btn-secondary"
+        >Cancelar</a
+      >
+    </form>
+  </div>
+</div>
+{% endblock %}

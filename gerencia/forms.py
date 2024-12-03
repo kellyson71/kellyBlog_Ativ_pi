@@ -1,19 +1,37 @@
 from django import forms
-from .models import Noticia
+from .models import Noticia, Categoria
 
+# Formulário de busca
+class CategoriaSearchForm(forms.Form):
+    nome = forms.CharField(
+        max_length=100, 
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Buscar categoria'})
+    )
+
+# Formulário de notícias
 class NoticiaForm(forms.ModelForm):
-    
     class Meta:
         model = Noticia
         fields = '__all__'
         widgets = {
-            'data_publicacao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), 
-            'texto': forms.Textarea(attrs={'class': 'form-control'}),  
-            'titulo': forms.TextInput(attrs={'class': 'form-control'}), 
-            'image': forms.FileInput(attrs={'class': 'form-control'}), 
+            'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título da notícia'}),
+            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'data_publicacao': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
             'categoria': forms.Select(attrs={'class': 'form-control'}),
-
         }
+
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = '__all__'
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        def __init__(self, *args, **kwargs):
+            super(CategoriaForm, self).__init__(*args, **kwargs)
+            self.fields['nome'].required = True
 
 
 
@@ -44,4 +62,4 @@ class NoticiaFilterForm(forms.Form):
         label='Categoria',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-  
+

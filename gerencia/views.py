@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
-from .forms import NoticiaForm, NoticiaFilterForm
+from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Noticia, Categoria
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required
@@ -46,6 +47,19 @@ def cadastrar_noticia(request):
     return render(request, 'gerencia/cadastro_noticia.html', contexto)
 
 @login_required
+def cadastrar_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save() 
+            return redirect('gerencia:listagem_categoria')  # Modificar aqui
+    else:
+        form = CategoriaForm()
+
+    contexto = {'form': form}
+    return render(request, 'gerencia/cadastro_categoria.html', contexto)
+
+@login_required
 def editar_noticia(request, id):
     noticia = Noticia.objects.get(id=id)
     if request.method == 'POST':
@@ -63,9 +77,30 @@ def editar_noticia(request, id):
     }
     return render(request, 'gerencia/cadastro_noticia.html',contexto)
 
+@login_required
+def editar_categoria(request, id):
+    categoria = Categoria.objects.get(id=id)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, request.FILES, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = CategoriaForm(instance=categoria)
+    
+    contexto = {
+        'form': form,
+        'categoria': categoria
+    }
+    return render(request, 'gerencia/editar_categoria.html',contexto)
 
 
+# views.py
+from django.shortcuts import render
+from .models import Categoria, Noticia
+from .forms import CategoriaSearchForm
 
+@login_required
 def index(request):
     categoria_nome = request.GET.get('categoria')  # Obtém o parâmetro 'categoria' da URL
     search_query = request.GET.get('search')  # Obtém o parâmetro de busca
@@ -80,12 +115,46 @@ def index(request):
     if search_query:
         noticias = noticias.filter(titulo__icontains=search_query)  # Filtra por título, ignorando maiúsculas/minúsculas
 
-    categorias = Categoria.objects.all()  # Pega todas as categorias para exibir no template
-
+    # Adiciona a busca de categorias
+    form = CategoriaSearchForm(request.GET or None)
+    categorias = Categoria.objects.all().order_by('nome')
+    if form.is_valid():
+        nome = form.cleaned_data.get('nome')
+        if nome:
+            categorias = categorias.filter(nome__icontains=nome)
+    paginator = Paginator(categorias, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     contexto = {
         'noticias': noticias,
-        'categorias': categorias,
+        'categorias': page_obj,
         'categoria_selecionada': categoria_nome,
         'search_query': search_query,
+        'form': form,
     }
     return render(request, 'gerencia/index.html', contexto)
+
+@login_required
+def excluir(request, id):
+    categoria = Categoria.objects.get(id=id)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, request.FILES, instance=categoria)
+        categoria.delete()
+        return redirect('gerencia:gerencia_inicial')  # Modificado aqui
+    return render(request, 'gerencia/excluir.html')
+
+@login_required
+def excluir_noticia(request, id):
+    noticia = Noticia.objects.get(id=id)
+    if request.method == 'POST':
+        noticia.delete()
+        return redirect('gerencia:listagem_noticia')
+    return render(request, 'gerencia/excluir_noticia.html', {'noticia': noticia})
+
+@login_required
+def listagem_categoria(request):
+    categorias = Categoria.objects.all()
+    contexto = {
+        'categorias': categorias
+    }
+    return render(request, 'gerencia/listagem_categoria.html', contexto)
